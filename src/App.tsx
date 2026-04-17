@@ -38,7 +38,31 @@ import {
   Star,
   HelpCircle,
   Info,
-  Phone
+  Phone,
+  Sun,
+  Moon,
+  Zap,
+  Palette,
+  Eye,
+  History,
+  Store,
+  Camera,
+  PieChart,
+  Repeat,
+  Calendar,
+  Ticket,
+  Package,
+  Heart,
+  Globe,
+  Fingerprint,
+  Users2,
+  DownloadCloud,
+  Languages,
+  Cctv,
+  Wrench,
+  Award,
+  Video,
+  BookOpen
 } from "lucide-react";
 import { PROVINCES, AHSP_CATALOG } from "./constants";
 import { 
@@ -232,6 +256,25 @@ export default function App() {
   const [newExpenseNote, setNewExpenseNote] = useState("");
   const [newExpenseAmount, setNewExpenseAmount] = useState("");
   const [weather, setWeather] = useState({ temp: 29, condition: "Cerah Berawan" });
+  
+  // 30 Features States
+  const [darkMode, setDarkMode] = useState(false);
+  const [showStyleQuiz, setShowStyleQuiz] = useState(false);
+  const [is360Mode, setIs360Mode] = useState(false);
+  const [rabHistory, setRabHistory] = useState<any[]>([]);
+  const [inventory, setInventory] = useState<any[]>([
+    { name: "Semen Padang", stock: 50, unit: "Sak" },
+    { name: "Pasir Merapi", stock: 2, unit: "Truk" }
+  ]);
+  const [debts, setDebts] = useState<any[]>([]);
+  const [vouchers, setVouchers] = useState<any[]>([
+    { code: "INDOPROMO", discount: "10%", desc: "Diskon Material Semen" }
+  ]);
+  const [points, setPoints] = useState(1250);
+  const [showChat, setShowChat] = useState(false);
+  const [showPWAInstall, setShowPWAInstall] = useState(false);
+  const [language, setLanguage] = useState("id");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
@@ -544,126 +587,216 @@ export default function App() {
     viewMode === "portal" ? (
       <ClientPortalView data={portalData} onBack={() => setViewMode("app")} />
     ) : (
-      <div className="flex h-screen bg-background text-foreground font-sans">
-        <Toaster position="top-right" />
-        
-        {/* Sidebar */}
-        <aside className="w-64 bg-sidebar border-r border-sidebar-border flex flex-col">
-          <div className="p-8 flex items-center gap-3">
+      <div className={`flex h-screen bg-background text-foreground font-sans ${darkMode ? 'dark' : ''}`}>
+      <Toaster position="top-right" />
+      
+      {/* Mobile Top Bar */}
+      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white dark:bg-slate-900 border-b z-50 flex items-center justify-between px-4">
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(true)}>
+            <MoreVertical size={20} />
+          </Button>
+          <div className="bg-primary p-1.5 rounded-lg">
+            <Building2 className="text-white h-5 w-5" />
+          </div>
+          <span className="font-extrabold text-lg tracking-tighter">IndoConstruct</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon" onClick={() => setDarkMode(!darkMode)}>
+            {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+          </Button>
+          <NotificationBell notifications={notifications} />
+        </div>
+      </div>
+
+      {/* Sidebar - Desktop & Tablet */}
+      <aside className={`fixed inset-y-0 left-0 z-50 w-72 bg-sidebar border-r border-sidebar-border transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="p-8 flex items-center justify-between">
+          <div className="flex items-center gap-3">
             <div className="bg-primary p-2 rounded-lg shadow-lg shadow-primary/20">
               <Building2 className="text-white h-6 w-6" />
             </div>
             <span className="font-extrabold text-xl tracking-tighter text-white">IndoConstruct</span>
           </div>
+          <Button variant="ghost" size="icon" className="md:hidden text-white" onClick={() => setIsSidebarOpen(false)}>
+            <ChevronRight size={24} />
+          </Button>
+        </div>
 
-            <nav className="flex-1 px-4 space-y-1">
+        <ScrollArea className="flex-1 px-4 space-y-1">
+          <div className="space-y-4">
+            <div className="px-3">
+              <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Utama</p>
               <NavItem 
                 icon={<LayoutDashboard size={18} />} 
-                label="Halaman Utama" 
+                label="Beranda" 
                 active={activeTab === "dashboard"} 
-                onClick={() => setActiveTab("dashboard")} 
+                onClick={() => { setActiveTab("dashboard"); setIsSidebarOpen(false); }} 
               />
-              {user?.role !== "customer" && (
-                <>
-                  <NavItem 
-                    icon={<Sparkles size={18} />} 
-                    label="Buat Gambar AI" 
-                    active={activeTab === "generator"} 
-                    onClick={() => setActiveTab("generator")} 
-                  />
-                  <NavItem 
-                    icon={<Calculator size={18} />} 
-                    label="Hitung Biaya Bangun" 
-                    active={activeTab === "rab"} 
-                    onClick={() => setActiveTab("rab")} 
-                  />
-                  <NavItem 
-                    icon={<Wallet size={18} />} 
-                    label="Catat Belanja" 
-                    active={activeTab === "expenses"} 
-                    onClick={() => setActiveTab("expenses")} 
-                  />
-                </>
-              )}
               <NavItem 
-                icon={<Users size={18} />} 
-                label="Daftar Proyek" 
+                icon={<Users2 size={18} />} 
+                label="Proyek Saya" 
                 active={activeTab === "projects"} 
-                onClick={() => setActiveTab("projects")} 
+                onClick={() => { setActiveTab("projects"); setIsSidebarOpen(false); }} 
               />
               <NavItem 
-                icon={<ClipboardList size={18} />} 
-                label="Syarat IMB/PBG" 
-                active={activeTab === "permits"} 
-                onClick={() => setActiveTab("permits")} 
+                icon={<Award size={18} />} 
+                label="Ahli Lokal" 
+                active={activeTab === "directory"} 
+                onClick={() => { setActiveTab("directory"); setIsSidebarOpen(false); }} 
+              />
+            </div>
+
+            <div className="px-3 pt-4">
+              <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Fitur AI & Kalkulator</p>
+              <NavItem 
+                icon={<Sparkles size={18} />} 
+                label="AI Desain Rumah" 
+                active={activeTab === "generator"} 
+                onClick={() => { setActiveTab("generator"); setIsSidebarOpen(false); }} 
+              />
+              <NavItem 
+                icon={<Calculator size={18} />} 
+                label="Hitung RAB" 
+                active={activeTab === "rab"} 
+                onClick={() => { setActiveTab("rab"); setIsSidebarOpen(false); }} 
+              />
+              <NavItem 
+                icon={<Palette size={18} />} 
+                label="Kuis Gaya AI" 
+                active={activeTab === "stylequiz"} 
+                onClick={() => { setActiveTab("stylequiz"); setIsSidebarOpen(false); }} 
+              />
+            </div>
+
+            <div className="px-3 pt-4">
+              <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Manajemen Proyek</p>
+              <NavItem 
+                icon={<Wallet size={18} />} 
+                label="Belanja & Hutang" 
+                active={activeTab === "expenses"} 
+                onClick={() => { setActiveTab("expenses"); setIsSidebarOpen(false); }} 
+              />
+              <NavItem 
+                icon={<Package size={18} />} 
+                label="Gudang Material" 
+                active={activeTab === "inventory"} 
+                onClick={() => { setActiveTab("inventory"); setIsSidebarOpen(false); }} 
+              />
+              <NavItem 
+                icon={<Cctv size={18} />} 
+                label="CCTV Proyek" 
+                active={activeTab === "view360"} 
+                onClick={() => { setActiveTab("view360"); setIsSidebarOpen(false); }} 
+              />
+            </div>
+
+            <div className="px-3 pt-4">
+              <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Lainnya</p>
+              <NavItem 
+                icon={<Store size={18} />} 
+                label="Toko Material" 
+                active={activeTab === "store"} 
+                onClick={() => { setActiveTab("store"); setIsSidebarOpen(false); }} 
+              />
+              <NavItem 
+                icon={<Ticket size={18} />} 
+                label="Voucher Diskon" 
+                active={activeTab === "vouchers"} 
+                onClick={() => { setActiveTab("vouchers"); setIsSidebarOpen(false); }} 
               />
               <NavItem 
                 icon={<HelpCircle size={18} />} 
-                label="Tanya Arsitek" 
+                label="Pusat Bantuan" 
                 active={activeTab === "help"} 
-                onClick={() => setActiveTab("help")} 
+                onClick={() => { setActiveTab("help"); setIsSidebarOpen(false); }} 
               />
-            </nav>
-
-            <div className="p-6">
-              {/* Profile Bar */}
-              <div className="bg-white/5 rounded-2xl p-5 border border-white/5">
-                <div className="flex justify-between items-center mb-3">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{user?.role === 'super_admin' ? 'Sistem Status' : 'Sisa Kuota'}</span>
-                </div>
-                <Progress value={user?.role === 'super_admin' ? 95 : 75} className="h-1 bg-slate-800" />
-                <div className="flex justify-between items-center mt-3">
-                  <span className="text-[10px] text-slate-500">
-                    {user?.role === 'super_admin' ? 'Server: Online' : 'Kredit Hampir Habis'}
-                  </span>
-                  <span className="text-[10px] font-bold text-primary">INFO</span>
-                </div>
-              </div>
-              
-              <div className="mt-4 flex items-center gap-3 px-3 py-3 hover:bg-white/5 rounded-xl cursor-pointer transition-colors group">
-                <div className="h-9 w-9 rounded-full bg-slate-800 flex items-center justify-center font-bold text-xs text-white border border-white/10 uppercase">
-                  {user?.name?.substring(0,2) || "??"}
-                </div>
-                <div className="flex-1 overflow-hidden">
-                  <p className="text-xs font-bold truncate text-white">{user?.name || "Memuat..."}</p>
-                  <p className="text-[9px] text-slate-500 uppercase font-bold tracking-tighter italic">{user?.role?.replace('_', ' ') || "..."}</p>
-                </div>
-                <button onClick={handleLogout} className="p-1 hover:text-white text-slate-500 transition-colors">
-                  <LogOut size={14} />
-                </button>
-              </div>
             </div>
-        </aside>
+          </div>
+        </ScrollArea>
 
-        {/* Main Content */}
-        <main className="flex-1 overflow-auto flex flex-col">
-          <header className="h-20 bg-background/80 backdrop-blur-md sticky top-0 z-10 flex items-center justify-between px-10 border-b border-border/50">
-            <div>
-              <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 italic">
-                {user?.role === 'customer' ? 'Pantau Rumah' : user?.role === 'super_admin' ? 'Pusat Kontrol' : 'Panel Arsitek'}
-              </h1>
-              <p className="text-slate-500 text-sm font-medium">Bantu orang bangun rumah, {user?.name}</p>
+        <div className="p-6 border-t border-white/5">
+          <div className="bg-white/5 rounded-2xl p-4 mb-4">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Poin Saya</span>
+              <span className="text-xs font-black text-primary">{points} Poin</span>
             </div>
-            <div className="flex items-center gap-6">
-              <NotificationBell notifications={notifications} />
-
-              {user?.role !== 'customer' && (
-                <div className="bg-secondary px-5 py-2.5 rounded-full border border-primary/20 flex items-center gap-2">
-                  <span className="text-xs font-bold text-primary uppercase tracking-wider">Saldo:</span>
-                  <span className="text-sm font-extrabold text-primary">{user?.credits} Kredit</span>
-                </div>
-              )}
-              
-              <Button size="sm" className="rounded-full bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 h-10 px-6">
-                <Plus size={18} className="mr-2" /> 
-                {user?.role === 'customer' ? 'Buka Support' : user?.role === 'super_admin' ? 'User Baru' : 'Render Baru'}
-              </Button>
+            <Progress value={65} className="h-1 bg-slate-800" />
+          </div>
+          
+          <div className="flex items-center gap-3 px-3 py-2 hover:bg-white/5 rounded-xl cursor-pointer transition-colors group">
+            <Avatar user={user} />
+            <div className="flex-1 overflow-hidden">
+              <p className="text-xs font-bold truncate text-white">{user?.name || "User"}</p>
+              <p className="text-[9px] text-slate-500 uppercase font-black italic">{user?.role?.replace('_', ' ')}</p>
             </div>
-          </header>
+            <button onClick={handleLogout} className="p-1 hover:text-white text-slate-500 transition-colors">
+              <LogOut size={14} />
+            </button>
+          </div>
+        </div>
+      </aside>
 
-          <div className="p-10 space-y-10 max-w-[1400px] mx-auto w-full">
+      {/* Main Content */}
+      <main className="flex-1 overflow-auto flex flex-col pt-16 md:pt-0 pb-20 md:pb-0">
+        <header className="hidden md:flex h-20 bg-background/80 backdrop-blur-md sticky top-0 z-10 items-center justify-between px-10 border-b border-border/50">
+          <div>
+            <h1 className="text-2xl font-extrabold tracking-tight italic">
+              {activeTab === 'dashboard' ? 'Panel Utama' : activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+            </h1>
+            <p className="text-slate-500 text-sm font-medium">Selamat datang kembali, {user?.name}</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" size="icon" className="rounded-full h-11 w-11" onClick={() => setDarkMode(!darkMode)}>
+               {darkMode ? <Sun size={20} className="text-yellow-400" /> : <Moon size={20} className="text-slate-600" />}
+            </Button>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger render={<Button variant="outline" className="rounded-full h-11 px-4 gap-2 border-2" />}>
+                  <Languages size={18} />
+                  <span className="text-xs font-bold">{language === 'id' ? 'Indonesia' : 'English'}</span>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setLanguage('id')}>Bahasa Indonesia</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setLanguage('en')}>English</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <NotificationBell notifications={notifications} />
+            <Button className="rounded-full bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 h-11 px-6 font-bold">
+              <Plus size={18} className="mr-2" /> BUAT PROYEK
+            </Button>
+          </div>
+        </header>
+
+        <div className="p-4 md:p-10 space-y-6 md:space-y-10 max-w-[1400px] mx-auto w-full">
             <AnimatePresence mode="wait">
-              {activeTab === "dashboard" && (
+              {activeTab === "directory" && (
+              <motion.div key="directory" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+                <div>
+                  <h2 className="text-3xl font-black italic tracking-tighter">Ahli Konstruksi Lokal</h2>
+                  <p className="text-slate-500 font-medium font-sans">Temukan kontraktor dan arsitek berlisensi di {selectedProvinceId}.</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                   {[
+                     { name: "Bpk. Heru Susanto", title: "Kontraktor Utama", xp: "15 Thn", avatar: "H" },
+                     { name: "Ibu Sarah Wijaya", title: "Arsitek Interior", xp: "8 Thn", avatar: "S" }
+                   ].map((pro, i) => (
+                     <Card key={i} className="rounded-3xl border-2 p-6 flex items-center gap-6">
+                        <div className="h-16 w-16 bg-slate-900 text-white rounded-2xl flex items-center justify-center font-black text-2xl">{pro.avatar}</div>
+                        <div className="flex-1">
+                           <p className="text-xl font-black italic tracking-tight">{pro.name}</p>
+                           <p className="text-xs font-bold text-primary uppercase">{pro.title}</p>
+                           <p className="text-[10px] font-bold text-slate-400 mt-1">Pengalaman: {pro.xp}</p>
+                        </div>
+                        <Button className="rounded-xl font-bold border-2" variant="outline">PORTFOLIO</Button>
+                     </Card>
+                   ))}
+                </div>
+              </motion.div>
+            )}
+
+            {activeTab === "dashboard" && (
                 <motion.div 
                   key="dashboard"
                   initial={{ opacity: 0, y: 10 }}
@@ -706,6 +839,39 @@ export default function App() {
                   {/* Main Dashboard Layout */}
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-2 space-y-6">
+                      <Card className="rounded-[2.5rem] border-2 shadow-xl overflow-hidden">
+                        <CardHeader className="p-8 border-b bg-slate-50/50">
+                           <div className="flex justify-between items-center">
+                              <div>
+                                 <CardTitle className="text-lg font-black italic">Analisa Biaya Mingguan</CardTitle>
+                                 <CardDescription>Grafik pengeluaran bahan & jasa 7 hari terakhir.</CardDescription>
+                              </div>
+                              <div className="text-right">
+                                 <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest leading-none mb-1">Total Minggu Ini</p>
+                                 <p className="text-2xl font-black text-primary tracking-tighter">Rp 12.800.000</p>
+                              </div>
+                           </div>
+                        </CardHeader>
+                        <CardContent className="p-8">
+                           <div className="h-48 w-full flex items-end gap-2 px-4">
+                              {[35, 60, 45, 80, 25, 90, 55].map((h, i) => (
+                                <motion.div 
+                                  key={i}
+                                  initial={{ height: 0 }}
+                                  animate={{ height: `${h}%` }}
+                                  className="flex-1 bg-primary/20 rounded-t-xl hover:bg-primary transition-colors relative group"
+                                >
+                                   <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[8px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                                      {h}jt
+                                   </div>
+                                </motion.div>
+                              ))}
+                           </div>
+                           <div className="flex justify-between mt-4 px-4 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+                              <span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span>
+                           </div>
+                        </CardContent>
+                      </Card>
                       <Card className="border-border shadow-sm">
                         <CardHeader className="flex flex-row items-center justify-between border-b py-4">
                           <div>
@@ -1105,6 +1271,39 @@ export default function App() {
               </motion.div>
             )}
 
+            {activeTab === "stylequiz" && (
+              <motion.div key="stylequiz" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-2xl mx-auto space-y-8">
+                <div className="text-center space-y-3">
+                   <Badge className="bg-amber-100 text-amber-700 rounded-full font-bold">REKOMENDASI AI</Badge>
+                   <h2 className="text-3xl font-black italic tracking-tighter">Kuis Gaya Rumah Impian</h2>
+                   <p className="text-slate-500 font-medium tracking-tight">Jawab 5 pertanyaan cepat, AI akan menyarankan gaya arsitektur yang paling cocok untuk Anda.</p>
+                </div>
+                <Card className="rounded-[3rem] border-4 border-slate-100 overflow-hidden shadow-2xl">
+                   <div className="p-10 space-y-8">
+                      <div className="space-y-4">
+                         <div className="flex justify-between text-xs font-black uppercase text-slate-400">
+                            <span>Pertanyaan 1 dari 5</span>
+                            <span>20% Selesai</span>
+                         </div>
+                         <Progress value={20} className="h-2" />
+                      </div>
+                      <h3 className="text-2xl font-black text-slate-900 tracking-tight">Suasana apa yang Anda inginkan saat pertama kali masuk rumah?</h3>
+                      <div className="grid grid-cols-1 gap-3">
+                         {["Hangat & Alami (Banyak Kayu)", "Dingin & Modern (Beton/Besi)", "Mewah & Klasik (Marmer)", "Minimalis & Terbuka (Banyak Kaca)"].map((opt, i) => (
+                           <Button key={i} variant="outline" className="h-16 rounded-2xl justify-start px-6 font-bold hover:bg-primary hover:text-white transition-all border-2">
+                             <div className="h-8 w-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center mr-4 font-black group-hover:bg-white/20">{String.fromCharCode(65+i)}</div>
+                             {opt}
+                           </Button>
+                         ))}
+                      </div>
+                   </div>
+                   <CardFooter className="bg-slate-50 p-8 border-t">
+                      <Button className="w-full bg-slate-900 h-14 rounded-2xl font-black text-lg">Mulai Analisa Gaya</Button>
+                   </CardFooter>
+                </Card>
+              </motion.div>
+            )}
+
             {activeTab === "expenses" && (
               <motion.div 
                 key="expenses"
@@ -1118,43 +1317,84 @@ export default function App() {
                   <p className="text-slate-500 font-medium">Pantau setiap Rupiah yang keluar agar tidak boncos.</p>
                 </div>
 
-                <Card className="rounded-3xl shadow-xl border-2">
-                  <CardContent className="p-8 space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label>Keterangan Barang/Jasa</Label>
-                        <Input placeholder="Contoh: Beli Semen 10 Sak" value={newExpenseNote} onChange={(e) => setNewExpenseNote(e.target.value)} />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Jumlah Biaya (Rp)</Label>
-                        <Input type="number" placeholder="500000" value={newExpenseAmount} onChange={(e) => setNewExpenseAmount(e.target.value)} />
-                      </div>
-                    </div>
-                    <Button className="w-full bg-primary h-12 rounded-xl font-bold" onClick={handleAddExpense}>
-                      SIMPAN PENGELUARAN
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                <div className="space-y-4">
-                  <h3 className="font-black uppercase tracking-widest text-xs text-slate-400 pl-2">Riwayat Pengeluaran Terbaru</h3>
-                  {dailyExpenses.length === 0 ? (
-                    <div className="p-10 text-center bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200">
-                      <Wallet size={48} className="mx-auto mb-4 text-slate-300" />
-                      <p className="text-sm font-bold text-slate-400">Belum ada pengeluaran hari ini.</p>
-                    </div>
-                  ) : (
-                    dailyExpenses.map(exp => (
-                      <div key={exp.id} className="bg-white p-5 rounded-3xl border shadow-sm flex items-center justify-between">
-                        <div>
-                          <p className="font-black text-slate-900 italic tracking-tight">{exp.note}</p>
-                          <p className="text-[10px] font-bold text-slate-400">{exp.date}</p>
+                <Tabs defaultValue="cash" className="w-full">
+                  <TabsList className="grid w-full grid-cols-2 h-14 rounded-2xl bg-slate-100 p-1.5">
+                    <TabsTrigger value="cash" className="rounded-xl font-bold">Belanja Tunai</TabsTrigger>
+                    <TabsTrigger value="debt" className="rounded-xl font-bold">Hutang Material</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="cash" className="mt-6 space-y-6">
+                    <Card className="rounded-3xl shadow-xl border-2">
+                      <CardContent className="p-8 space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label>Keterangan Barang/Jasa</Label>
+                            <Input placeholder="Contoh: Beli Semen 10 Sak" value={newExpenseNote} onChange={(e) => setNewExpenseNote(e.target.value)} />
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Jumlah Biaya (Rp)</Label>
+                            <Input type="number" placeholder="500000" value={newExpenseAmount} onChange={(e) => setNewExpenseAmount(e.target.value)} />
+                          </div>
                         </div>
-                        <p className="text-lg font-black text-primary tracking-tighter">{formatCurrency(exp.amount)}</p>
-                      </div>
-                    ))
-                  )}
-                </div>
+                        <Button className="w-full bg-primary h-12 rounded-xl font-bold" onClick={handleAddExpense}>
+                          SIMPAN PENGELUARAN
+                        </Button>
+                      </CardContent>
+                    </Card>
+
+                    <div className="space-y-4">
+                      <h3 className="font-black uppercase tracking-widest text-xs text-slate-400 pl-2">Riwayat Pengeluaran Terbaru</h3>
+                      {dailyExpenses.length === 0 ? (
+                        <div className="p-10 text-center bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200">
+                          <Wallet size={48} className="mx-auto mb-4 text-slate-300" />
+                          <p className="text-sm font-bold text-slate-400">Belum ada pengeluaran hari ini.</p>
+                        </div>
+                      ) : (
+                        dailyExpenses.map(exp => (
+                          <div key={exp.id} className="bg-white p-5 rounded-3xl border shadow-sm flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                               <div className="h-10 w-10 bg-green-50 text-green-600 rounded-xl flex items-center justify-center">
+                                  <ArrowRight size={18} className="rotate-45" />
+                               </div>
+                               <div>
+                                 <p className="font-black text-slate-900 italic tracking-tight">{exp.note}</p>
+                                 <p className="text-[10px] font-bold text-slate-400">{exp.date}</p>
+                               </div>
+                            </div>
+                            <p className="text-lg font-black text-primary tracking-tighter">{formatCurrency(exp.amount)}</p>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="debt" className="mt-6 space-y-6">
+                     <Card className="rounded-3xl border-red-100 bg-red-50/30 p-8 border-2 text-center space-y-4">
+                        <div className="bg-white h-16 w-16 mx-auto rounded-2xl flex items-center justify-center text-red-500 shadow-sm border border-red-100">
+                           <AlertCircle size={32} />
+                        </div>
+                        <h3 className="font-black text-xl italic tracking-tight">Total Hutang Material: Rp 4.250.000</h3>
+                        <p className="text-xs font-bold text-slate-500 uppercase tracking-widest leading-relaxed">Harap lunasi hutang ke toko "TB Jaya Makmur" sebelum jatuh tempo tanggal 25 April.</p>
+                        <Button className="bg-red-600 text-white font-black rounded-xl h-12 px-8 hover:bg-red-700">BAYAR HUTANG SEKARANG</Button>
+                     </Card>
+                     
+                     <div className="bg-white rounded-3xl border overflow-hidden">
+                        <div className="p-4 bg-slate-50 border-b flex justify-between items-center">
+                           <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Data Hutang</span>
+                           <Button variant="ghost" size="sm" className="h-7 text-[10px] font-bold uppercase">Unduh Rekap</Button>
+                        </div>
+                        <div className="p-6 space-y-4">
+                           <div className="flex justify-between items-center">
+                              <div>
+                                 <p className="font-black text-sm italic">Semen & Bata - TB Abadi</p>
+                                 <p className="text-[10px] font-bold text-slate-400">Diinput 15 April 2024</p>
+                              </div>
+                              <Badge className="bg-red-100 text-red-600 border-none font-bold">Rp 1.500.000</Badge>
+                           </div>
+                        </div>
+                     </div>
+                  </TabsContent>
+                </Tabs>
               </motion.div>
             )}
 
@@ -1257,9 +1497,131 @@ export default function App() {
                 </div>
               </motion.div>
             )}
+            {activeTab === "inventory" && (
+              <motion.div key="inventory" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+                <div className="flex justify-between items-end">
+                  <div>
+                    <h2 className="text-3xl font-black italic tracking-tighter">Gudang Material</h2>
+                    <p className="text-slate-500 font-medium">Stok bahan bangunan di lokasi proyek.</p>
+                  </div>
+                  <Button className="rounded-xl font-bold bg-primary px-6"><Plus size={18} className="mr-2" /> TAMBAH BARANG</Button>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                   {inventory.map((item, i) => (
+                     <Card key={i} className="rounded-3xl border-2 hover:border-primary/30 transition-all">
+                       <CardContent className="p-6 flex items-center gap-4">
+                         <div className="h-14 w-14 bg-slate-100 rounded-2xl flex items-center justify-center text-primary">
+                           <Package size={28} />
+                         </div>
+                         <div className="flex-1">
+                           <p className="font-black text-slate-900 leading-tight">{item.name}</p>
+                           <p className="text-2xl font-black text-primary tracking-tighter">{item.stock} <span className="text-xs text-slate-400 font-bold uppercase">{item.unit}</span></p>
+                         </div>
+                         <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full"><ChevronRight size={18} /></Button>
+                       </CardContent>
+                     </Card>
+                   ))}
+                </div>
+              </motion.div>
+            )}
+
+            {activeTab === "store" && (
+              <motion.div key="store" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
+                 <div className="text-center max-w-xl mx-auto space-y-3">
+                   <h2 className="text-3xl font-black italic tracking-tighter">Toko Material Terdekat</h2>
+                   <p className="text-slate-500 font-medium">Bandingkan harga material dari toko bangunan di sekitar {selectedProvinceId}.</p>
+                 </div>
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {[
+                      { name: "Semen Holcim", price: 65000, shop: "TB Jaya Makmur" },
+                      { name: "Pasir Hitam", price: 1200000, shop: "Depo Bangunan" },
+                      { name: "Bata Merah", price: 850, shop: "TB Abadi" },
+                      { name: "Cat Dulux 5Kg", price: 210000, shop: "Mitra 10" }
+                    ].map((item, i) => (
+                      <Card key={i} className="rounded-3xl overflow-hidden border-2 group hover:border-primary transition-all">
+                        <div className="aspect-square bg-slate-100 flex items-center justify-center">
+                          <ImageIcon size={48} className="text-slate-300 group-hover:scale-110 transition-transform" />
+                        </div>
+                        <CardContent className="p-5 space-y-2">
+                          <p className="font-extrabold text-slate-900 italic tracking-tighter">{item.name}</p>
+                          <p className="text-lg font-black text-primary">{formatCurrency(item.price)}</p>
+                          <div className="flex items-center gap-1 text-[10px] font-bold text-slate-400 uppercase">
+                            <MapPin size={10} /> {item.shop}
+                          </div>
+                        </CardContent>
+                        <CardFooter className="p-5 pt-0">
+                           <Button className="w-full bg-slate-900 text-white rounded-xl font-bold h-10">PESAN SEKARANG</Button>
+                        </CardFooter>
+                      </Card>
+                    ))}
+                 </div>
+              </motion.div>
+            )}
+
+            {activeTab === "vouchers" && (
+              <motion.div key="vouchers" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-xl mx-auto space-y-6">
+                <h2 className="text-3xl font-black italic tracking-tighter text-center">Klaim Diskon Anda</h2>
+                {vouchers.map((v, i) => (
+                  <div key={i} className="bg-primary text-white p-6 rounded-[2rem] shadow-xl shadow-primary/20 flex items-center justify-between border-4 border-white/10 relative overflow-hidden group">
+                     <div className="absolute -right-4 -top-4 bg-white/10 h-24 w-24 rounded-full group-hover:scale-150 transition-transform" />
+                     <div className="relative z-10">
+                        <p className="text-4xl font-black italic tracking-tighter leading-none mb-1">{v.discount}</p>
+                        <p className="text-xs font-bold uppercase tracking-widest opacity-80">{v.desc}</p>
+                     </div>
+                     <div className="relative z-10 text-right">
+                        <p className="bg-white text-primary px-4 py-1.5 rounded-full font-black text-xs mb-3 inline-block">{v.code}</p>
+                        <Button variant="ghost" className="block text-[10px] font-black uppercase text-white hover:bg-white/10">Salin Kode</Button>
+                     </div>
+                  </div>
+                ))}
+              </motion.div>
+            )}
+
+            {activeTab === "view360" && (
+              <motion.div key="view360" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h2 className="text-3xl font-black italic tracking-tighter">Visual Lapangan</h2>
+                    <p className="text-slate-500 font-medium font-sans">Pantau kemajuan fisik proyek via Foto & Video 360°.</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button variant={is360Mode ? "default" : "outline"} onClick={() => setIs360Mode(!is360Mode)} className="rounded-xl font-bold">
+                       <Repeat size={18} className="mr-2" /> {is360Mode ? "MODE BIASA" : "MODE 360°"}
+                    </Button>
+                    <Button variant="outline" className="rounded-xl font-bold"><Camera size={18} className="mr-2" /> AMBIL FOTO</Button>
+                  </div>
+                </div>
+                <div className="aspect-video bg-slate-900 rounded-[3rem] overflow-hidden relative shadow-2xl border-8 border-white/5">
+                   <img src="https://picsum.photos/seed/construc/1280/720" alt="Site" className="w-full h-full object-cover opacity-60" />
+                   <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="h-20 w-20 bg-primary/80 backdrop-blur-md rounded-full flex items-center justify-center text-white shadow-2xl animate-pulse cursor-pointer">
+                         <Video size={40} />
+                      </div>
+                   </div>
+                   <div className="absolute bottom-10 left-10 p-4 bg-black/40 backdrop-blur-md rounded-2xl border border-white/10">
+                      <p className="text-white font-black text-xs uppercase tracking-widest flex items-center gap-2">
+                         <div className="h-2 w-2 bg-red-500 rounded-full animate-pulse" /> LIVE: AREA LANTAI 1
+                      </p>
+                   </div>
+                </div>
+              </motion.div>
+            )}
           </AnimatePresence>
         </div>
       </main>
+
+      {/* Mobile Bottom Nav */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-20 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg border-t z-50 flex items-center justify-around px-4">
+        <MobileNavItem icon={<LayoutDashboard size={22} />} active={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} />
+        <MobileNavItem icon={<Calculator size={22} />} active={activeTab === 'rab'} onClick={() => setActiveTab('rab')} />
+        <div className="relative -top-6">
+           <Button size="icon" className="h-14 w-14 rounded-full shadow-2xl shadow-primary/40 bg-primary border-4 border-white" onClick={() => setActiveTab('generator')}>
+              <Sparkles size={24} className="text-white" />
+           </Button>
+        </div>
+        <MobileNavItem icon={<Users2 size={22} />} active={activeTab === 'projects'} onClick={() => setActiveTab('projects')} />
+        <MobileNavItem icon={<MoreVertical size={22} />} onClick={() => setIsSidebarOpen(true)} />
+      </nav>
     </div>
   )
 );
@@ -1494,16 +1856,35 @@ function NavItem({ icon, label, active, onClick }: { icon: React.ReactNode, labe
 
 function StatCard({ label, value, subtext, trend }: { label: string, value: string, subtext: string, trend?: "up" | "down" }) {
   return (
-    <Card className="border-border/60 shadow-sm hover:shadow-md transition-shadow">
-      <CardContent className="p-6">
-        <p className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-2">{label}</p>
+    <Card className="border-border/60 shadow-sm hover:shadow-md transition-all dark:bg-slate-900/50 dark:border-slate-800">
+      <CardContent className="p-4 md:p-6">
+        <p className="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1 md:mb-2">{label}</p>
         <div className="flex items-baseline gap-2">
-          <p className="text-3xl font-extrabold tracking-tight text-slate-900">{value}</p>
-          {trend === "up" && <span className="text-[10px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">+22%</span>}
+          <p className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-none">{value}</p>
+          {trend === "up" && <span className="text-[9px] md:text-[10px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">+22%</span>}
         </div>
-        <p className="text-[11px] text-slate-400 mt-2 font-medium"> {subtext} </p>
+        <p className="text-[10px] md:text-[11px] text-slate-400 mt-1 md:mt-2 font-medium"> {subtext} </p>
       </CardContent>
     </Card>
+  );
+}
+
+function MobileNavItem({ icon, active, onClick }: { icon: React.ReactNode, active?: boolean, onClick: () => void }) {
+  return (
+    <button 
+      onClick={onClick}
+      className={`p-3 rounded-2xl transition-all ${active ? "text-primary bg-primary/10" : "text-slate-400"}`}
+    >
+      {icon}
+    </button>
+  );
+}
+
+function Avatar({ user }: { user: any }) {
+  return (
+    <div className="h-9 w-9 rounded-full bg-slate-800 flex items-center justify-center font-bold text-xs text-white border border-white/10 uppercase shadow-inner">
+      {user?.name?.substring(0,2) || "??"}
+    </div>
   );
 }
 
