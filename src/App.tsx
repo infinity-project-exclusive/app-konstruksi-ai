@@ -58,11 +58,18 @@ import {
   Users2,
   DownloadCloud,
   Languages,
+  MessageCircle,
+  Smartphone,
+  Send,
+  UserCheck,
   Cctv,
   Wrench,
   Award,
   Video,
-  BookOpen
+  BookOpen,
+  PlusCircle,
+  LineChart,
+  X
 } from "lucide-react";
 import { PROVINCES, AHSP_CATALOG } from "./constants";
 import { 
@@ -137,6 +144,334 @@ import {
   Timestamp,
   updateDoc
 } from "firebase/firestore";
+
+// Landing Page Component
+function LandingPage({ onLogin, onGuestLogin }: { onLogin: () => void, onGuestLogin: () => void }) {
+  return (
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 scroll-smooth">
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="bg-primary p-2 rounded-xl shadow-lg shadow-primary/20">
+              <Building2 className="text-white h-6 w-6" />
+            </div>
+            <span className="font-black text-xl tracking-tighter italic">IndoConstruct AI</span>
+          </div>
+          <div className="hidden md:flex items-center gap-8 text-sm font-bold uppercase tracking-widest text-slate-500">
+            <a href="#fitur" className="hover:text-primary transition-colors">Fitur</a>
+            <a href="#cara-kerja" className="hover:text-primary transition-colors">Cara Kerja</a>
+            <a href="#kontak" className="hover:text-primary transition-colors">Kontak</a>
+          </div>
+          <div className="flex items-center gap-3">
+             <Button variant="ghost" className="hidden sm:flex font-bold text-slate-500" onClick={onGuestLogin}>COBA DEMO</Button>
+             <Button className="bg-slate-900 text-white font-black px-6 rounded-xl h-12 shadow-xl hover:bg-slate-800" onClick={onLogin}>MASUK</Button>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section className="pt-32 pb-20 px-6">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+          <div className="space-y-10">
+            <Badge className="bg-primary/10 text-primary py-2 px-4 rounded-full font-black tracking-widest text-xs">REVOLUASI KONSTRUKSI INDONESIA</Badge>
+            <h1 className="text-6xl md:text-8xl font-black italic tracking-tight leading-[0.9] text-slate-900">
+              Bangun Rumah <br/><span className="text-primary underline decoration-8 decoration-primary/20 underline-offset-8">Tanpa Pusing</span>
+            </h1>
+            <p className="text-xl text-slate-500 font-medium max-w-lg leading-relaxed">
+              Platform AI tercanggih di Indonesia untuk desain arsitektur otomatis, hitung RAB akurat, hingga pantauan proyek langsung dari HP Anda.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+               <Button className="h-16 px-10 bg-primary text-white rounded-2xl font-black text-xl shadow-2xl shadow-primary/30 hover:scale-105 transition-transform" onClick={onLogin}>
+                 MULAI BANGUN SEKARANG
+                 <ArrowRight size={24} className="ml-3" />
+               </Button>
+               <Button variant="outline" className="h-16 px-10 border-4 border-slate-200 rounded-2xl font-black text-xl hover:bg-slate-50" onClick={onGuestLogin}>
+                 GUEST ACCESS (DEMO)
+               </Button>
+            </div>
+            <div className="flex items-center gap-6 pt-4">
+               <div className="flex -space-x-3">
+                  {[1,2,3,4].map(i => <div key={i} className="h-10 w-10 rounded-full border-4 border-white bg-slate-200 overflow-hidden"><img src={`https://picsum.photos/seed/${i+100}/100/100`} /></div>)}
+               </div>
+               <p className="text-sm font-bold text-slate-400 uppercase tracking-widest tracking-tighter">Dipercaya oleh 5,000+ Kontraktor & Pemilik Rumah</p>
+            </div>
+          </div>
+          <div className="relative">
+             <div className="absolute -inset-10 bg-primary/20 blur-[100px] rounded-full animate-pulse" />
+             <div className="relative bg-white rounded-[3rem] shadow-2xl overflow-hidden border-8 border-white">
+                <img src="https://picsum.photos/seed/modern-house/1200/800" alt="House" className="w-full aspect-[4/3] object-cover" />
+                <div className="absolute top-10 right-10 p-6 bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-primary/20">
+                   <p className="text-[10px] font-black uppercase text-slate-400 mb-1">Total Biaya (RAB)</p>
+                   <p className="text-3xl font-black text-primary tracking-tighter">Rp 450.000.000</p>
+                </div>
+             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Grid */}
+      <section id="fitur" className="py-20 px-6 bg-slate-900 text-white rounded-[4rem] mx-4">
+         <div className="max-w-7xl mx-auto space-y-20">
+            <div className="text-center space-y-4">
+               <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter">Satu Aplikasi, <br/>Semua Solusi Konstruksi</h2>
+               <p className="text-slate-400 text-lg font-medium">Lengkap, Pintar, dan Sangat Mudah Digunakan.</p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-8">
+               <div className="bg-white/5 p-10 rounded-[3rem] border border-white/10 hover:bg-white/10 transition-all group">
+                  <div className="h-16 w-16 bg-primary rounded-2xl flex items-center justify-center mb-8 rotate-3 group-hover:rotate-0 transition-transform">
+                     <Sparkles size={32} className="text-white" />
+                  </div>
+                  <h3 className="text-2xl font-black italic mb-4">AI Architect</h3>
+                  <p className="text-slate-400 font-medium">Buat ribuan desain rumah hanya dengan mengetik keinginan Anda.</p>
+               </div>
+               <div className="bg-white/5 p-10 rounded-[3rem] border border-white/10 hover:bg-white/10 transition-all group">
+                  <div className="h-16 w-16 bg-blue-500 rounded-2xl flex items-center justify-center mb-8 rotate-3 group-hover:rotate-0 transition-transform">
+                     <Calculator size={32} className="text-white" />
+                  </div>
+                  <h3 className="text-2xl font-black italic mb-4">Smart RAB</h3>
+                  <p className="text-slate-400 font-medium">Hitung biaya bangunan otomatis sesuai harga material di wilayah Anda.</p>
+               </div>
+               <div className="bg-white/5 p-10 rounded-[3rem] border border-white/10 hover:bg-white/10 transition-all group">
+                  <div className="h-16 w-16 bg-green-500 rounded-2xl flex items-center justify-center mb-8 rotate-3 group-hover:rotate-0 transition-transform">
+                     <Cctv size={32} className="text-white" />
+                  </div>
+                  <h3 className="text-2xl font-black italic mb-4">CCTV Proyek</h3>
+                  <p className="text-slate-400 font-medium">Pantau tukang dan progres fisik secara LIVE 360° dari ponsel Anda.</p>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      {/* Steps */}
+      <section id="cara-kerja" className="py-32 px-6">
+        <div className="max-w-7xl mx-auto">
+           <div className="grid md:grid-cols-2 gap-20 items-center">
+              <div className="space-y-12">
+                 <div className="space-y-4">
+                    <h2 className="text-5xl font-black italic tracking-tighter leading-none">Membangun Rumah <br/>Dalam 3 Langkah Mudah</h2>
+                    <p className="text-slate-500 font-medium text-lg">Kami mendampingi Anda dari lahan kosong sampai kunci di tangan.</p>
+                 </div>
+                 <div className="space-y-10">
+                    {[
+                      { step: "01", title: "Rancang Dengan AI", desc: "Ketik konsep rumah Anda, AI kami akan buatkan visual & denah instan." },
+                      { step: "02", title: "Hitung Anggaran", desc: "Dapatkan rincian biaya (RAB) paling akurat berdasarkan standar nasional." },
+                      { step: "03", title: "Eksekusi & Pantau", desc: "Hubungkan dengan kontraktor pilihan dan pantau progres tiap harinya." }
+                    ].map((s, i) => (
+                      <div key={i} className="flex gap-8 group">
+                         <div className="text-6xl font-black text-slate-100 group-hover:text-primary transition-colors leading-none italic">{s.step}</div>
+                         <div className="space-y-2 pt-2">
+                            <h4 className="text-2xl font-black italic tracking-tighter">{s.title}</h4>
+                            <p className="text-slate-500 font-medium leading-normal">{s.desc}</p>
+                         </div>
+                      </div>
+                    ))}
+                 </div>
+              </div>
+              <div className="bg-slate-100 rounded-[4rem] aspect-square overflow-hidden shadow-inner flex items-center justify-center relative">
+                 <img src="https://picsum.photos/seed/plan/1000/1000" className="w-full h-full object-cover opacity-80" />
+                 <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
+                 <div className="absolute bottom-10 left-10 right-10 bg-white p-8 rounded-[3rem] shadow-2xl border-4 border-primary/10">
+                    <div className="flex items-center gap-4 mb-4">
+                       <CheckCircle className="text-green-500 h-8 w-8" />
+                       <h5 className="font-black italic">Desain Siap Bangun</h5>
+                    </div>
+                    <div className="space-y-3">
+                       <div className="h-2 bg-slate-100 rounded-full overflow-hidden"><div className="h-full bg-primary w-full" /></div>
+                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Validasi Kelayakan Bangunan: 100% (AMAN)</p>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-20 px-6 bg-slate-50">
+         <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-8">
+            <div className="flex-1 bg-white p-12 rounded-[3.5rem] border shadow-xl relative overflow-hidden">
+               <div className="absolute top-0 right-0 p-8 text-primary/5"><Building2 size={120} /></div>
+               <div className="relative z-10 space-y-6">
+                  <div className="flex gap-1">
+                     {[1,2,3,4,5].map(i => <Star key={i} size={16} className="fill-amber-400 text-amber-400" />)}
+                  </div>
+                  <p className="text-2xl font-black italic tracking-tight italic leading-relaxed">"Aplikasi ini sangat memudahkan saya yang benar-benar awam soal teknik. Hitung biaya rumah jadi gak perlu ribet!"</p>
+                  <div>
+                     <p className="font-black italic text-lg">Bu Heni</p>
+                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Pemilik Rumah di Bandung</p>
+                  </div>
+               </div>
+            </div>
+            <div className="flex-1 bg-slate-900 text-white p-12 rounded-[3.5rem] shadow-2xl relative overflow-hidden">
+               <div className="absolute top-0 right-0 p-8 text-white/5"><ShieldCheck size={120} /></div>
+               <div className="relative z-10 space-y-6">
+                  <div className="flex gap-1">
+                     {[1,2,3,4,5].map(i => <Star key={i} size={16} className="fill-primary text-primary" />)}
+                  </div>
+                  <p className="text-2xl font-black italic tracking-tight italic leading-relaxed">"Sebagai kontraktor, IndoConstruct membantu saya transparan dengan client. Progres proyek jadi lebih jelas."</p>
+                  <div>
+                     <p className="font-black italic text-lg">Pak Agus</p>
+                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Kontraktor Sipil</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      {/* Final CTA */}
+      <section id="kontak" className="py-32 px-6">
+        <div className="max-w-4xl mx-auto text-center space-y-12">
+           <h2 className="text-5xl md:text-7xl font-black italic tracking-tighter leading-none">Siap Wujudkan Rumah <br/>Impian Anda?</h2>
+           <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Button className="h-20 px-12 bg-primary text-white rounded-3xl font-black text-2xl shadow-2xl shadow-primary/30 hover:scale-105 transition-transform" onClick={onLogin}>
+                 GABUNG SEKARANG
+              </Button>
+              <a href="https://wa.me/6282198606806" target="_blank" rel="noreferrer" className="h-20 px-12 bg-green-500 text-white rounded-3xl font-black text-2xl shadow-2xl shadow-green-500/30 flex items-center justify-center gap-4 hover:scale-105 transition-transform no-underline">
+                 <Smartphone size={32} />
+                 KONSULTASI WA
+              </a>
+           </div>
+           <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">GRATIS COBA | LOGIN AMAN DENGAN GOOGLE</p>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-20 border-t bg-white">
+        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12">
+          <div className="col-span-2 space-y-6">
+             <div className="flex items-center gap-3">
+                <div className="bg-primary p-2 rounded-xl">
+                  <Building2 className="text-white h-6 w-6" />
+                </div>
+                <span className="font-black text-2xl tracking-tighter italic">IndoConstruct AI</span>
+             </div>
+             <p className="text-slate-500 font-medium max-w-sm">Membantu masyarakat Indonesia membangun hunian berkualitas dengan bantuan teknologi kecerdasan buatan.</p>
+          </div>
+          <div className="space-y-4">
+             <h5 className="font-black italic uppercase text-xs text-slate-400 tracking-widest">Tautan Cepat</h5>
+             <ul className="space-y-3 font-bold text-slate-600">
+                <li><a href="#" className="hover:text-primary transition-colors">Tentang Kami</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Harga Nasional</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Panduan Bangun</a></li>
+             </ul>
+          </div>
+          <div className="space-y-4">
+             <h5 className="font-black italic uppercase text-xs text-slate-400 tracking-widest">Ikuti Kami</h5>
+             <div className="flex gap-4">
+                {[1,2,3,4].map(i => <div key={i} className="h-10 w-10 bg-slate-100 rounded-xl hover:bg-primary/10 transition-colors cursor-pointer" />)}
+             </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+function AIChatBot() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState<{ role: 'user' | 'ai', text: string }[]>([
+    { role: 'ai', text: 'Halo! Saya asisten IndoConstruct. Ada yang bisa saya bantu tentang denah, biaya, atau pembangunan rumah Anda?' }
+  ]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSend = async () => {
+    if (!input.trim() || isLoading) return;
+    
+    const userMsg = input;
+    setInput("");
+    setMessages(prev => [...prev, { role: 'user', text: userMsg }]);
+    setIsLoading(true);
+
+    try {
+      const response = await ai.models.generateContent({
+        model: "gemini-3-flash-preview",
+        contents: userMsg,
+        config: {
+          systemInstruction: "Anda adalah Asisten IndoConstruct AI. Ahli konstruksi, arsitektur, dan RAB di Indonesia. Gunakan bahasa Indonesia yang sangat mudah dipahami orang awam. Singkat dan jelas."
+        }
+      });
+      
+      const aiText = response.text || "Maaf, saya sedang mengalami kendala teknis.";
+      setMessages(prev => [...prev, { role: 'ai', text: aiText }]);
+    } catch (e) {
+      setMessages(prev => [...prev, { role: 'ai', text: "Maaf, koneksi AI sedang sibuk. Silakan coba lagi nanti." }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="fixed bottom-6 right-6 z-[60]">
+       <AnimatePresence>
+          {isOpen && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="absolute bottom-20 right-0 w-80 md:w-96 bg-white rounded-[2.5rem] shadow-2xl border-4 border-slate-100 overflow-hidden flex flex-col h-[500px]"
+            >
+               <div className="bg-slate-900 p-6 text-white flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                     <div className="h-10 w-10 bg-primary rounded-xl flex items-center justify-center">
+                        <Sparkles size={20} className="text-white" />
+                     </div>
+                     <div>
+                        <p className="font-black italic text-sm">IndoConstruct AI Chat</p>
+                        <p className="text-[10px] uppercase font-bold text-slate-400">Online & Siap Membantu</p>
+                     </div>
+                  </div>
+                  <Button variant="ghost" size="icon" className="text-white/50" onClick={() => setIsOpen(false)}>
+                     <X size={20} />
+                  </Button>
+               </div>
+               <ScrollArea className="flex-1 p-6 space-y-4">
+                  <div className="space-y-4 pb-4">
+                    {messages.map((m, i) => (
+                      <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                         <div className={`max-w-[80%] p-4 rounded-3xl text-sm font-medium ${m.role === 'user' ? 'bg-primary text-white' : 'bg-slate-100 text-slate-700'}`}>
+                            {m.text}
+                         </div>
+                      </div>
+                    ))}
+                    {isLoading && (
+                      <div className="flex justify-start">
+                         <div className="bg-slate-100 p-4 rounded-3xl"><Loader2 size={16} className="animate-spin text-slate-400" /></div>
+                      </div>
+                    )}
+                  </div>
+               </ScrollArea>
+               <div className="p-6 border-t bg-slate-50">
+                  <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="flex gap-2">
+                     <Input 
+                       placeholder="Ketik pesan..." 
+                       value={input} 
+                       onChange={(e) => setInput(e.target.value)}
+                       className="rounded-2xl border-slate-200"
+                     />
+                     <Button type="submit" size="icon" className="bg-slate-900 rounded-2xl shrink-0" disabled={isLoading}>
+                        <Send size={18} />
+                     </Button>
+                  </form>
+               </div>
+            </motion.div>
+          )}
+       </AnimatePresence>
+       <div className="flex flex-col gap-3">
+          <a href="https://wa.me/6282198606806" target="_blank" rel="noreferrer" className="h-16 w-16 bg-green-500 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform border-4 border-white">
+             <Smartphone size={28} />
+          </a>
+          <button 
+            onClick={() => setIsOpen(!isOpen)}
+            className="h-16 w-16 bg-primary text-white rounded-full flex items-center justify-center shadow-2xl shadow-primary/40 hover:scale-110 transition-transform border-4 border-white relative"
+          >
+            {isOpen ? <X size={28} /> : <MessageCircle size={28} />}
+            {!isOpen && <div className="absolute top-0 right-0 h-4 w-4 bg-red-500 rounded-full border-2 border-white animate-bounce" />}
+          </button>
+       </div>
+    </div>
+  );
+}
 
 // Initialization
 function AuthScreen({ onLogin }: { onLogin: () => void }) {
@@ -223,10 +558,19 @@ type User = {
   role: "super_admin" | "contractor" | "customer";
 };
 
+const DEMO_USER: User = {
+  id: "demo-user",
+  name: "Pengguna Demo",
+  email: "demo@indoconstruct.com",
+  credits: 999,
+  role: "contractor"
+};
+
 export default function App() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [user, setUser] = useState<User | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
+  const [isGuest, setIsGuest] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
@@ -276,6 +620,31 @@ export default function App() {
   const [language, setLanguage] = useState("id");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  // Floor Plan State
+  const [rooms, setRooms] = useState<{ id: string, name: string, width: number, length: number }[]>([
+    { id: "1", name: "Ruang Tamu", width: 4, length: 5 },
+    { id: "2", name: "Kamar Tidur", width: 3, length: 3 }
+  ]);
+  const [floorPlanMode, setFloorPlanMode] = useState<"2d" | "3d" | "4d">("2d");
+  const [newRoomName, setNewRoomName] = useState("");
+  const [newRoomW, setNewRoomW] = useState("");
+  const [newRoomL, setNewRoomL] = useState("");
+
+  const handleAddRoom = () => {
+    if (!newRoomName || !newRoomW || !newRoomL) return;
+    const newRoom = {
+      id: Math.random().toString(36).substr(2, 9),
+      name: newRoomName,
+      width: parseFloat(newRoomW),
+      length: parseFloat(newRoomL)
+    };
+    setRooms([...rooms, newRoom]);
+    setNewRoomName("");
+    setNewRoomW("");
+    setNewRoomL("");
+    toast.success("Ruangan ditambahkan!");
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
       setAuthLoading(true);
@@ -314,6 +683,18 @@ export default function App() {
 
   useEffect(() => {
     if (!user) return;
+
+    if (isGuest) {
+      // Mock data for demo
+      setProjects([
+        { id: "p1", name: "Rumah Minimalis Modern", client: "Bpk. Andi", status: "In Progress", progress: 45, lastUpdate: "Baru saja" },
+        { id: "p2", name: "Renovasi Cafe Kopi", client: "Ibu Maya", status: "Planning", progress: 10, lastUpdate: "Kemarin" }
+      ]);
+      setNotifications([
+        { id: "n1", type: "welcome", message: "Selamat datang di Demo IndoConstruct!", created_at: new Date().toISOString(), is_read: false }
+      ]);
+      return;
+    }
 
     // Listen to Projects
     const qProjects = user.role === 'super_admin' 
@@ -364,20 +745,32 @@ export default function App() {
       unsubNotifs();
       unsubUser();
     };
-  }, [user?.id]); // Depend on user.id to avoid infinite re-runs if user object changes slightly
+  }, [user?.id, isGuest]); // Depend on user.id to avoid infinite re-runs if user object changes slightly
 
   const handleGoogleLogin = async () => {
     try {
       await loginWithGoogle();
+      setIsGuest(false);
       toast.success("Login berhasil!");
     } catch (e) {
-      toast.error("Gagal login dengan Google");
+      toast.error("Gagal login dengan Google. Coba mode demo.");
     }
+  };
+
+  const handleDemoLogin = () => {
+    setUser(DEMO_USER);
+    setIsGuest(true);
+    toast.success("Masuk dalam mode Demo. Selamat mencoba!");
   };
 
   const handleLogout = async () => {
     try {
-      await signOut(auth);
+      if (isGuest) {
+        setUser(null);
+        setIsGuest(false);
+      } else {
+        await signOut(auth);
+      }
       toast.success("Berhasil keluar");
       setUser(null);
     } catch (e) {
@@ -574,20 +967,22 @@ export default function App() {
     );
   }
 
-  if (!user) {
+  if (!user && !isGuest) {
     return (
       <>
         <Toaster position="top-right" />
-        <AuthScreen onLogin={handleGoogleLogin} />
+        <LandingPage onLogin={handleGoogleLogin} onGuestLogin={handleDemoLogin} />
+        <AIChatBot />
       </>
     );
   }
 
   return (
-    viewMode === "portal" ? (
-      <ClientPortalView data={portalData} onBack={() => setViewMode("app")} />
-    ) : (
-      <div className={`flex h-screen bg-background text-foreground font-sans ${darkMode ? 'dark' : ''}`}>
+    <>
+      {viewMode === "portal" ? (
+        <ClientPortalView data={portalData} onBack={() => setViewMode("app")} />
+      ) : (
+        <div className={`flex h-screen bg-background text-foreground font-sans ${darkMode ? 'dark' : ''}`}>
       <Toaster position="top-right" />
       
       {/* Mobile Top Bar */}
@@ -654,6 +1049,12 @@ export default function App() {
                 label="AI Desain Rumah" 
                 active={activeTab === "generator"} 
                 onClick={() => { setActiveTab("generator"); setIsSidebarOpen(false); }} 
+              />
+              <NavItem 
+                icon={<MapPin size={18} />} 
+                label="Perancang Denah" 
+                active={activeTab === "floorplan"} 
+                onClick={() => { setActiveTab("floorplan"); setIsSidebarOpen(false); }} 
               />
               <NavItem 
                 icon={<Calculator size={18} />} 
@@ -1606,6 +2007,140 @@ export default function App() {
                 </div>
               </motion.div>
             )}
+            {activeTab === "floorplan" && (
+              <motion.div key="floorplan" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8 max-w-5xl mx-auto">
+                <div className="text-center space-y-3">
+                   <Badge className="bg-primary/10 text-primary rounded-full font-bold">SMART ARCHITECT</Badge>
+                   <h2 className="text-4xl font-black italic tracking-tighter">Perancang Denah Pintar</h2>
+                   <p className="text-slate-500 font-medium">Buat denah 2D, 3D, dan simulasi 4D dalam ukuran berapapun secara instan.</p>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                   <div className="lg:col-span-4 space-y-6">
+                      <Card className="rounded-3xl border-2 shadow-xl">
+                         <CardHeader>
+                            <CardTitle className="text-lg font-black italic">Tambah Ruangan</CardTitle>
+                            <CardDescription>Masukkan ukuran ruangan impian Anda.</CardDescription>
+                         </CardHeader>
+                         <CardContent className="space-y-4">
+                            <div className="space-y-2">
+                               <Label>Nama Ruangan</Label>
+                               <Input placeholder="Kamar Depan" value={newRoomName} onChange={(e) => setNewRoomName(e.target.value)} />
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                               <div className="space-y-2">
+                                  <Label>Lebar (m)</Label>
+                                  <Input type="number" placeholder="3" value={newRoomW} onChange={(e) => setNewRoomW(e.target.value)} />
+                               </div>
+                               <div className="space-y-2">
+                                  <Label>Panjang (m)</Label>
+                                  <Input type="number" placeholder="4" value={newRoomL} onChange={(e) => setNewRoomL(e.target.value)} />
+                               </div>
+                            </div>
+                            <Button className="w-full bg-slate-900 h-12 rounded-xl font-bold" onClick={handleAddRoom}>
+                               TAMBAH KE DENAH
+                            </Button>
+                         </CardContent>
+                      </Card>
+
+                      <div className="space-y-3">
+                         <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 pl-2">Daftar Ruangan</h3>
+                         <div className="space-y-2 max-h-[300px] overflow-auto pr-2">
+                            {rooms.map(room => (
+                               <div key={room.id} className="bg-white p-4 rounded-2xl border flex justify-between items-center shadow-sm">
+                                  <div>
+                                     <p className="font-black italic text-sm">{room.name}</p>
+                                     <p className="text-[10px] font-bold text-slate-400">{room.width}m x {room.length}m</p>
+                                  </div>
+                                  <Button variant="ghost" size="icon" className="h-8 w-8 text-red-400" onClick={() => setRooms(rooms.filter(r => r.id !== room.id))}>
+                                     <LogOut size={14} />
+                                  </Button>
+                               </div>
+                            ))}
+                         </div>
+                      </div>
+                   </div>
+
+                   <div className="lg:col-span-8 space-y-6">
+                      <Tabs value={floorPlanMode} onValueChange={(val: any) => setFloorPlanMode(val)} className="w-full">
+                         <TabsList className="grid w-full grid-cols-3 h-14 rounded-2xl bg-slate-100 p-1.5 border-2">
+                            <TabsTrigger value="2d" className="rounded-xl font-black italic">Tampilan 2D</TabsTrigger>
+                            <TabsTrigger value="3d" className="rounded-xl font-black italic">Visual 3D</TabsTrigger>
+                            <TabsTrigger value="4d" className="rounded-xl font-black italic">Simulasi 4D</TabsTrigger>
+                         </TabsList>
+                         
+                         <TabsContent value="2d" className="mt-6">
+                            <Card className="rounded-[2.5rem] border-4 border-slate-100 bg-white shadow-2xl overflow-hidden min-h-[500px] relative flex items-center justify-center bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:20px_20px]">
+                               <svg viewBox="0 0 400 300" className="w-full h-full p-10">
+                                  {rooms.map((room, i) => {
+                                     // Simple grid positioning for demo
+                                     const x = (i % 3) * 120 + 20;
+                                     const y = Math.floor(i / 3) * 100 + 20;
+                                     return (
+                                        <g key={room.id}>
+                                           <rect x={x} y={y} width={room.width * 15} height={room.length * 15} fill="white" stroke="#0f172a" strokeWidth="3" rx="4" />
+                                           <text x={x + 5} y={y + 15} fontSize="8" fontWeight="bold" fill="#0f172a">{room.name}</text>
+                                           <text x={x + 5} y={y + 30} fontSize="6" fill="#94a3b8">{room.width}m x {room.length}m</text>
+                                        </g>
+                                     )
+                                  })}
+                               </svg>
+                               <div className="absolute top-6 right-6 flex gap-2">
+                                  <Button size="sm" variant="outline" className="rounded-lg bg-white/80 backdrop-blur font-bold">Screenshot</Button>
+                                  <Button size="sm" variant="outline" className="rounded-lg bg-white/80 backdrop-blur font-bold">Cetak PDF</Button>
+                               </div>
+                            </Card>
+                         </TabsContent>
+
+                         <TabsContent value="3d" className="mt-6">
+                            <Card className="rounded-[2.5rem] border-4 border-slate-100 bg-slate-900 shadow-2xl overflow-hidden min-h-[500px] relative flex flex-col items-center justify-center p-10 text-center space-y-6">
+                               <div className="absolute inset-0 opacity-20 bg-[url('https://picsum.photos/seed/3droom/1200/800')] bg-cover" />
+                               <div className="relative z-10 space-y-4">
+                                  <div className="h-20 w-20 bg-primary rounded-3xl mx-auto flex items-center justify-center text-white rotate-12 shadow-2xl">
+                                     <Eye size={40} />
+                                  </div>
+                                  <h3 className="text-3xl font-black text-white italic tracking-tighter">Visualisasi 3D Interaktif</h3>
+                                  <p className="text-slate-400 max-w-sm mx-auto font-medium">Tur virtual 3D berdasarkan denah yang Anda buat. Rasakan volume ruangan Anda sekarang.</p>
+                                  <Button className="bg-primary text-primary-foreground font-black rounded-xl h-12 px-8">MULAI TUR VIRTUAL</Button>
+                               </div>
+                            </Card>
+                         </TabsContent>
+
+                         <TabsContent value="4d" className="mt-6">
+                            <Card className="rounded-[2.5rem] border-4 border-slate-100 bg-white shadow-2xl overflow-hidden min-h-[500px] p-10 space-y-8">
+                               <div className="flex justify-between items-center">
+                                  <h3 className="text-xl font-black italic">Simulasi Garis Waktu Konstruksi (4D)</h3>
+                                  <Badge className="bg-green-100 text-green-700">Aktif</Badge>
+                               </div>
+                               <div className="space-y-6">
+                                  {[
+                                     { stage: "Pondasi & Struktur", time: "Minggu 1-4", progress: 100 },
+                                     { stage: "Dinding & Atap", time: "Minggu 5-10", progress: 65 },
+                                     { stage: "Finishing Interior", time: "Minggu 11-14", progress: 0 }
+                                  ].map((step, i) => (
+                                     <div key={i} className="space-y-2">
+                                        <div className="flex justify-between text-xs font-bold uppercase tracking-widest">
+                                           <span>{step.stage}</span>
+                                           <span className="text-slate-400">{step.time}</span>
+                                        </div>
+                                        <Progress value={step.progress} className="h-2" />
+                                     </div>
+                                  ))}
+                               </div>
+                               <div className="p-6 bg-slate-50 rounded-3xl border-2 border-dashed flex items-center gap-4">
+                                  <Clock className="text-primary" size={32} />
+                                  <div>
+                                     <p className="font-black italic">Estimasi Waktu Selesai</p>
+                                     <p className="text-xs font-bold text-slate-500">24 Juli 2026 (14 Minggu)</p>
+                                  </div>
+                               </div>
+                            </Card>
+                         </TabsContent>
+                      </Tabs>
+                   </div>
+                </div>
+              </motion.div>
+            )}
           </AnimatePresence>
         </div>
       </main>
@@ -1623,7 +2158,9 @@ export default function App() {
         <MobileNavItem icon={<MoreVertical size={22} />} onClick={() => setIsSidebarOpen(true)} />
       </nav>
     </div>
-  )
+  )}
+  <AIChatBot />
+</>
 );
 }
 
