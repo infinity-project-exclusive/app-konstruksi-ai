@@ -11,6 +11,7 @@ Berikut adalah rancangan relasional untuk sistem SaaS konstruksi:
 | `email` | String | Alamat email user |
 | `role` | Enum | `super_admin`, `contractor`, `customer` |
 | `credits` | Integer | Saldo kredit AI |
+| `preferences` | JSONB | Pengaturan notifikasi (email, in-app) |
 | `created_at` | Timestamp | Waktu pendaftaran |
 
 ### Tabel: `projects`
@@ -18,10 +19,31 @@ Berikut adalah rancangan relasional untuk sistem SaaS konstruksi:
 |-------|------|-----------|
 | `id` | UUID | Primary Key |
 | `contractor_id` | UUID | Foreign Key -> `users.id` |
+| `client_id` | UUID | Foreign Key -> `users.id` (Opsional) |
 | `client_name` | String | Nama klien end-user |
 | `title` | String | Judul proyek (misal: Rumah Minimalis 45m2) |
 | `status` | Enum | `planning`, `in_progress`, `completed` |
 | `share_token` | String | Token unik untuk link white-label klien |
+
+### Tabel: `milestones`
+| Kolom | Tipe | Deskripsi |
+|-------|------|-----------|
+| `id` | UUID | Primary Key |
+| `project_id` | UUID | Foreign Key -> `projects.id` |
+| `title` | String | Judul Milestone |
+| `description` | Text | Deskripsi progres |
+| `is_completed` | Boolean | Status penyelesaian |
+| `completed_at` | Timestamp | Waktu penyelesaian |
+
+### Tabel: `notifications`
+| Kolom | Tipe | Deskripsi |
+|-------|------|-----------|
+| `id` | UUID | Primary Key |
+| `user_id` | UUID | Foreign Key -> `users.id` |
+| `type` | String | Jenis (milestone, credits, feedback) |
+| `message` | Text | Isi pesan notifikasi |
+| `is_read` | Boolean | Status baca |
+| `created_at` | Timestamp | Waktu pembuatan |
 
 ### Tabel: `generated_designs`
 | Kolom | Tipe | Deskripsi |
