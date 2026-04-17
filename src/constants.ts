@@ -1,0 +1,58 @@
+/**
+ * Konfigurasi Jangkauan Nasional IndoConstruct AI
+ * AHSP Nusantara 2024
+ */
+
+export const PROVINCES = [
+  { id: "aceh", name: "Aceh", multiplier: 1.05 },
+  { id: "sumut", name: "Sumatera Utara", multiplier: 1.02 },
+  { id: "sumbar", name: "Sumatera Barat", multiplier: 1.0 },
+  { id: "riau", name: "Riau", multiplier: 1.1 },
+  { id: "jambi", name: "Jambi", multiplier: 1.0 },
+  { id: "sumsel", name: "Sumatera Selatan", multiplier: 1.02 },
+  { id: "bengkulu", name: "Bengkulu", multiplier: 0.98 },
+  { id: "lampung", name: "Lampung", multiplier: 0.95 },
+  { id: "babel", name: "Bangka Belitung", multiplier: 1.15 },
+  { id: "kepri", name: "Kepulauan Riau", multiplier: 1.2 },
+  { id: "jakarta", name: "DKI Jakarta", multiplier: 1.25 },
+  { id: "jabar", name: "Jawa Barat", multiplier: 1.05 },
+  { id: "jateng", name: "Jawa Tengah", multiplier: 0.9 },
+  { id: "diy", name: "DI Yogyakarta", multiplier: 0.88 },
+  { id: "jatim", name: "Jawa Timur", multiplier: 0.95 },
+  { id: "banten", name: "Banten", multiplier: 1.1 },
+  { id: "bali", name: "Bali", multiplier: 1.15 },
+  { id: "ntb", name: "Nusa Tenggara Barat", multiplier: 1.0 },
+  { id: "ntt", name: "Nusa Tenggara Timur", multiplier: 1.05 },
+  { id: "kalbar", name: "Kalimantan Barat", multiplier: 1.1 },
+  { id: "kalteng", name: "Kalimantan Tengah", multiplier: 1.15 },
+  { id: "kalsel", name: "Kalimantan Selatan", multiplier: 1.1 },
+  { id: "kaltim", name: "Kalimantan Timur (IKN)", multiplier: 1.3 },
+  { id: "kalut", name: "Kalimantan Utara", multiplier: 1.25 },
+  { id: "sulut", name: "Sulawesi Utara", multiplier: 1.1 },
+  { id: "sulteng", name: "Sulawesi Tengah", multiplier: 1.05 },
+  { id: "sulsel", name: "Sulawesi Selatan", multiplier: 1.0 },
+  { id: "sultra", name: "Sulawesi Tenggara", multiplier: 1.05 },
+  { id: "gorontalo", name: "Gorontalo", multiplier: 0.98 },
+  { id: "sulbar", name: "Sulawesi Barat", multiplier: 0.95 },
+  { id: "maluku", name: "Maluku", multiplier: 1.2 },
+  { id: "malut", name: "Maluku Utara", multiplier: 1.25 },
+  { id: "papua", name: "Papua", multiplier: 1.5 },
+  { id: "papuabarat", name: "Papua Barat", multiplier: 1.45 },
+  { id: "papuaselatan", name: "Papua Selatan", multiplier: 1.5 },
+  { id: "papuatengah", name: "Papua Tengah", multiplier: 1.5 },
+  { id: "papuapegunungan", name: "Papua Pegunungan", multiplier: 1.6 },
+  { id: "papuabaratdaya", name: "Papua Barat Daya", multiplier: 1.45 },
+];
+
+export const AHSP_CATALOG = [
+  { code: "A.1", name: "Galian Tanah & Urugan", unit: "m3", basePrice: 85000 },
+  { code: "A.2", name: "Pondasi Batu Kali", unit: "m3", basePrice: 850000 },
+  { code: "B.1", name: "Beton Bertulang (Sluf/Kolom)", unit: "m3", basePrice: 4200000 },
+  { code: "C.1", name: "Pasangan Bata Merah", unit: "m2", basePrice: 145000 },
+  { code: "C.2", name: "Plesteran & Acian", unit: "m2", basePrice: 75000 },
+  { code: "D.1", name: "Rangka Atap Baja Ringan", unit: "m2", basePrice: 185000 },
+  { code: "D.2", name: "Pasang Genteng Metal", unit: "m2", basePrice: 95000 },
+  { code: "E.1", name: "Lantai Keramik 40x40", unit: "m2", basePrice: 165000 },
+  { code: "F.1", name: "Cat Tembok Interior", unit: "m2", basePrice: 35000 },
+  { code: "G.1", name: "Instalasi Titik Lampu", unit: "titik", basePrice: 225000 },
+];
